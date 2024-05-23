@@ -22,7 +22,7 @@
 			<div class="block">
 				<div class="block-header block-header-default">
 					<h3 class="block-title">
-						<a class="btn btn-warning btn-sm float-right" href="{{ route('karyawan.index') }}"> <i class="fa fa-chevron-left"></i> Back</a>
+						<a class="btn btn-warning btn-sm float-right" href="{{ route('partnership.index') }}"> <i class="fa fa-chevron-left"></i> Back</a>
 					</h3>
 				</div>
 				<div class="block-content block-content-full">									
@@ -30,32 +30,29 @@
 					<?php 
 					if($set=="insert"){ 
 						$row = ""; ?>
-						<form class="mb-5" action="{{ route('karyawan.create') }}" method="POST" enctype="multipart/form-data">
+						<form class="mb-5" action="{{ route('partnership.create') }}" method="POST" enctype="multipart/form-data">
 					<?php
 					}elseif($set=="edit"){
-						$row = $karyawan; ?>
-						<form class="mb-5" action="{{ route('karyawan.update',$row->id) }}" method="POST" enctype="multipart/form-data">
-					<?php } ?>					
+						$row = $partnership; ?>
+						<form class="mb-5" action="{{ route('partnership.update',$row->id) }}" method="POST" enctype="multipart/form-data">
+					<?php } ?>
+
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">						
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label" >Nama</label>
 							<div class="col-sm-6">
 								<input type="text" class="form-control" name="name" value="<?=($row)?$row->name:old('name');?>" placeholder="Nama">
 							</div>																			
-							<label class="col-sm-2 col-form-label">Jenis Kelamin</label>
+							<label class="col-sm-2 col-form-label">Kode</label>
 							<div class="col-sm-2">
-								<select class="form-control" name="jk">
-									<option value="">- choose -</option>
-									<option <?=($row&&$row->jk==1)?'selected':'';?> value="1">Laki-laki</option>
-									<option <?=($row&&$row->jk==2)?'selected':'';?> value="2">Perempuan</option>
-								</select>
+								<input type="text" class="form-control" name="kode" readonly value="<?=($row)?$row->code:'Auto';?>" placeholder="Kode">								
 							</div>				
 						</div>						
 											
 						<div class="form-group row">			
-							<label class="col-sm-2 col-form-label">Email</label>
+							<label class="col-sm-2 col-form-label">No KTP</label>
 							<div class="col-sm-4">
-								<input type="email" required class="form-control" name="email" value="<?=($row)?$row->email:old('email');?>" placeholder="Email">
+								<input type="number" required class="form-control" name="no_ktp" value="<?=($row)?$row->no_ktp:old('no_ktp');?>" placeholder="No KTP">
 							</div>													
 							<label class="col-sm-2 col-form-label">No HP</label>
 							<div class="col-sm-4">
@@ -67,13 +64,45 @@
 							<div class="col-sm-10">
 								<input type="text" class="form-control" name="alamat" value="<?=($row)?$row->alamat:old('alamat');?>" placeholder="Alamat">
 							</div>
-						</div>						
+						</div>					
+						<div class="form-group row">			
+							<label class="col-sm-2 col-form-label">Kota</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="kota" value="<?=($row)?$row->kota:old('kota');?>" placeholder="Kota">
+							</div>													
+							<label class="col-sm-2 col-form-label">Kecamatan</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="kecamatan" value="<?=($row)?$row->kecamatan:old('kecamatan');?>" placeholder="Kecamatan">
+							</div>
+						</div>		
+						<div class="form-group row">			
+							<label class="col-sm-2 col-form-label">Kodepos</label>
+							<div class="col-sm-4">
+								<input type="number" class="form-control" name="kodepos" value="<?=($row)?$row->kodepos:old('kodepos');?>" placeholder="Kodepos">
+							</div>													
+							<label class="col-sm-2 col-form-label">Akun IG</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="akun_instagram" value="<?=($row)?$row->akun_instagram:old('akun_instagram');?>" placeholder="Akun Instagram">
+							</div>													
+						</div>
+						<div class="form-group row">			
+							<label class="col-sm-2 col-form-label">Akun FB</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="akun_fb" value="<?=($row)?$row->akun_fb:old('akun_fb');?>" placeholder="Akun FB">
+							</div>													
+							<label class="col-sm-2 col-form-label">Akun Tiktok</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="akun_tiktok" value="<?=($row)?$row->akun_tiktok:old('akun_tiktok');?>" placeholder="Akun Tiktok">
+							</div>													
+						</div>				
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label">Foto</label>
 							<div class="col-sm-4">
 								<input type="file" class="form-control" name="foto">
 							</div>
-						</div>						
+						</div>	
+					
+
 						<div class="form-group row">
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">

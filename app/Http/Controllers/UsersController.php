@@ -20,7 +20,7 @@ class UsersController extends Controller
 
     public function index(){
         // echo Uuid::uuid4()->getHex(); die();
-        $usersData = UsersModel::join('user_type', 'user_type.id', '=', 'users.id_user_type')                   
+        $usersData = UsersModel::leftJoin('user_type', 'user_type.id', '=', 'users.id_user_type')                   
                     ->get(['user_type.name AS user_type', 'users.*']);
         $data['title']  = $this->title;
         $data['subtitle']  = $this->subtitle;

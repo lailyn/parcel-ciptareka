@@ -65,6 +65,7 @@
 												aria-expanded="false"> Action <i class="fas fa-chevron-down"></i>
 											</button>
 											<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+												<a class="dropdown-item" href="{{ route('paket.addDetail', $row->id) }}">Add Detail</a> 
 												<a class="dropdown-item" href="{{ route('paket.edit', $row->id) }}">Edit</a> 
 												<a class="dropdown-item" href="{{ route('paket.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 
 											</div>

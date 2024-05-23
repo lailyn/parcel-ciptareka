@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KaryawanModel;
+use App\Models\PartnershipModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -10,22 +10,21 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 
-class KaryawanController extends Controller
+class PartnershipController extends Controller
 {
-	var $set        = "karyawan";
-	var $title      = "Karyawan";
-	var $subtitle   = "Master Karyawan";
-	var $folder     = "master/karyawan";
+	var $set        = "partnership";
+	var $title      = "Partnershipship";
+	var $subtitle   = "Partnershipship";
+	var $folder     = "master/partnership";
 
 	public function index(){
-		$karyawanData = KaryawanModel::orderBy('karyawan.id','DESC')
-					->get(['karyawan.*']);               
+		$partnershipData = PartnershipModel::orderBy('partnership.id','DESC')
+					->get(['partnership.*']);               
 		$data['title']  = $this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
-		$data['set']    = "view";
-		// dd($user = Auth::user()->getAttributes());                   
-		return view($this->folder.'/index',$data)->with('karyawan', $karyawanData);
+		$data['set']    = "view";		                  
+		return view($this->folder.'/index',$data)->with('partnership', $partnershipData);
 	}
 	public function insert(){
 		$data['title']  = "Add ".$this->title;
@@ -33,30 +32,26 @@ class KaryawanController extends Controller
 		$data['isi']    = $this->set;
 		$data['set']    = "insert";		
 		return view($this->folder.'/insert',$data);
-	}
-	public function cakupan($id){
-		$data['title']  = "Add Cakupan ".$this->title;
-		$data['subtitle']  = $this->subtitle;
-		$data['isi']    = $this->set;
-		$data['set']    = "insert";       
-		$data['karyawan_id']    = $id;       
-		$data['cakupan'] = DB::table("karyawan_cakupan")->where("karyawan_id",$id)->get(); 
-		return view($this->folder.'/cakupan',$data);
-	}
-	
+	}	
 	public function create(Request $request){
 		$validator = $request->validate([
 		  'name' => 'required',		  
-		  'email' => 'required',		  		  		  
+		  'no_ktp' => 'required',		  		  		  
 		  'no_hp' => 'required',  
 		  'foto' => 'mimes:jpeg,jpg,png|max:1000',
 		]);
 		if ($validator) {
-			$data = new KaryawanModel;
+			$data = new PartnershipModel;
 			$data->name = $request->name;        			
-			$data->jk = $request->jk;        			
+			$data->code = generateRandomString(3).cariKode_helper("partnership");;        			
+			$data->no_ktp = $request->no_ktp;        			
 			$data->no_hp = $request->no_hp;        
-			$data->email = $request->email;        
+			$data->kecamatan = $request->kecamatan;        
+			$data->kota = $request->kota;        
+			$data->kodepos = $request->kodepos;        
+			$data->akun_instagram = $request->akun_instagram;        
+			$data->akun_fb = $request->akun_fb;        
+			$data->akun_tiktok = $request->akun_tiktok;        
 			$data->alamat = $request->alamat;                			
 			$data->status =  (!is_null($request->status))?$request->status:0;           
 			$data->created_at = Carbon::now()->toDateTimeString();
@@ -64,51 +59,56 @@ class KaryawanController extends Controller
 			$objectName = 'foto';
 			if ($request->hasFile($objectName)) {
 				$fileName = time() . '_' . $request->file($objectName)->getClientOriginalName();
-				$upload = $request->file($objectName)->move(public_path('ima49es/karyawan'), $fileName);
+				$upload = $request->file($objectName)->move(public_path('ima49es/partnership'), $fileName);
 				$data->foto = $fileName;
 			}
 					
 			$data->save();
 			session()->put('msg', setMsg("Successed!","success"));        
-			return redirect()->route('karyawan.index');
+			return redirect()->route('partnership.index');
 		}else{
 			session()->put('msg', setMsg($validator->errors(),"danger"));        
 			echo "<script>history.go(-1)</script>";
 		}        
 	}
 	public function delete($id){
-		$data = KaryawanModel::find($id);
+		$data = PartnershipModel::find($id);
 		$data->delete();
 		session()->put('msg', setMsg("Successed!","success"));        
-		return redirect()->route('karyawan.index');
+		return redirect()->route('partnership.index');
 	}
 	public function edit($id){
 		$data['title']  = "Edit ".$this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
 		$data['set']    = "edit";
-		$karyawanData = KaryawanModel::find($id);		
-		return view($this->folder.'/insert',$data)->with('karyawan', $karyawanData);
+		$partnershipData = PartnershipModel::find($id);		
+		return view($this->folder.'/insert',$data)->with('partnership', $partnershipData);
 	}
 	public function update($id, Request $request){
 		$validator = $request->validate([
 		  'name' => 'required',		  
-		  'email' => 'required',		  		  		  
+		  'no_ktp' => 'required',		  		  		  
 		  'no_hp' => 'required',  
 		  'foto' => 'mimes:jpeg,jpg,png|max:1000',
 		]);
 		if ($validator) {
-			$data = KaryawanModel::find($id);
+			$data = PartnershipModel::find($id);
 			$data->name = $request->name;        			
-			$data->jk = $request->jk;        			
-			$data->email = $request->email;        
+			$data->no_ktp = $request->no_ktp;        			
 			$data->no_hp = $request->no_hp;        
-			$data->alamat = $request->alamat;                			 
+			$data->kecamatan = $request->kecamatan;        
+			$data->kota = $request->kota;        
+			$data->kodepos = $request->kodepos;        
+			$data->akun_instagram = $request->akun_instagram;        
+			$data->akun_fb = $request->akun_fb;        
+			$data->akun_tiktok = $request->akun_tiktok;        
+			$data->alamat = $request->alamat;                			
 			$data->status =  (!is_null($request->status))?$request->status:0;     
 			$data->updated_at = Carbon::now()->toDateTimeString();
 
 			$objectName = 'foto';
-			$public_path = 'ima49es/karyawan';
+			$public_path = 'ima49es/partnership';
 			if ($request->hasFile($objectName)) {			
 				$image_path = public_path($public_path."/".$data->foto);
 
@@ -122,33 +122,10 @@ class KaryawanController extends Controller
 			}
 			$data->save();    
 			session()->put('msg', setMsg("Successed!","success"));        
-			return redirect()->route('karyawan.index');
+			return redirect()->route('partnership.index');
 		}else{
 			session()->put('msg', setMsg($validator->errors(),"danger"));        
 			echo "<script>history.go(-1)</script>";
 		}
-	}
-	public function akun($id){		
-		$amb = KaryawanModel::find($id);		
-
-		$cek = User::where("email",$amb->email)->get();
-		if($cek->count()){
-			$data = User::find($cek->first()->id);
-		}else{
-			$data = new User;
-		}		
-		$data->email = $amb->email;        
-		$data->name = $amb->name;        
-		$data->no_hp =$amb->no_hp;
-		$pwd = get_setting('password_default');
-		$data->password = Hash::make($pwd);        		
-		$data->id_user_type = 2;
-		$data->karyawan_id = $amb->id;        
-		$data->status = 1;		
-		$data->updated_at = Carbon::now()->toDateTimeString();
-		
-		$data->save();    
-		session()->put('msg', setMsg("Successed!","success"));        
-		return redirect()->route('karyawan.index');
 	}
 }

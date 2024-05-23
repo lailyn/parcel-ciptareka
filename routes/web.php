@@ -8,17 +8,11 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\PaketController;
-
-
-use App\Http\Controllers\NegaraController;
-use App\Http\Controllers\JabatanKaryawanController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PartnershipController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\UserTypeController;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\ProvinsiController;
-use App\Http\Controllers\KabupatenController;
-use App\Http\Controllers\KecamatanController;
-use App\Http\Controllers\KelurahanController;
 
 
 /*
@@ -77,10 +71,13 @@ Route::middleware('auth')->group(function () {
 	Route::controller(PaketController::class)->name('paket.')->prefix('paket')->group(function(){
 		Route::get('/index', 'index')->name('index');
 		Route::get('/insert', 'insert')->name('insert');
+		Route::get('/addDetail/{id}', 'addDetail')->name('addDetail');
+		Route::post('/saveDetail/{id}', 'saveDetail')->name('saveDetail');
 		Route::post('/create', 'create')->name('create');
 		Route::get('/edit/{id}', 'edit')->name('edit');
 		Route::post('/update/{id}', 'update')->name('update');
 		Route::get('/delete/{id}', 'delete')->name('delete');
+		Route::get('/deleteDetail/{id}/{ids}', 'deleteDetail')->name('deleteDetail');
 	});
 	Route::controller(PeriodeController::class)->name('periode.')->prefix('periode')->group(function(){
 		Route::get('/index', 'index')->name('index');
@@ -89,6 +86,26 @@ Route::middleware('auth')->group(function () {
 		Route::get('/edit/{id}', 'edit')->name('edit');
 		Route::post('/update/{id}', 'update')->name('update');
 		Route::get('/delete/{id}', 'delete')->name('delete');
+	});
+	Route::controller(MemberController::class)->name('member.')->prefix('member')->group(function(){
+		Route::get('/index', 'index')->name('index');
+		Route::get('/insert', 'insert')->name('insert');
+		Route::post('/create', 'create')->name('create');
+		Route::get('/edit/{id}', 'edit')->name('edit');
+		Route::post('/update/{id}', 'update')->name('update');
+		Route::get('/delete/{id}', 'delete')->name('delete');
+		Route::get('/jadiPartner/{id}', 'jadiPartner')->name('jadiPartner');
+		Route::get('/pilihPaket/{id}', 'pilihPaket')->name('pilihPaket');		
+		Route::post('/saveDetail/{id}', 'saveDetail')->name('saveDetail');
+		Route::get('/deleteDetail/{id}/{ids}', 'deleteDetail')->name('deleteDetail');
+	});
+	Route::controller(PartnershipController::class)->name('partnership.')->prefix('partnership')->group(function(){
+		Route::get('/index', 'index')->name('index');
+		Route::get('/insert', 'insert')->name('insert');
+		Route::post('/create', 'create')->name('create');
+		Route::get('/edit/{id}', 'edit')->name('edit');
+		Route::post('/update/{id}', 'update')->name('update');
+		Route::get('/delete/{id}', 'delete')->name('delete');		
 	});
 
 
