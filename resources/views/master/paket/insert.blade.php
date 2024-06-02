@@ -88,6 +88,12 @@
 							</div>
 						</div>	
 						<div class="form-group row">
+							<label class="col-sm-2 col-form-label" >Deskripsi</label>
+							<div class="col-sm-10">
+								<input <?=$dis?> type="text" class="form-control" value="<?=($row)?$row->deskripsi:'';?>" name="deskripsi">
+							</div>
+						</div>
+						<div class="form-group row">
 							<label class="col-sm-2 col-form-label" >Tgl Mulai</label>
 							<div class="col-sm-2">
 								<input <?=$dis?> type="date" class="form-control" required value="<?=($row)?$row->tgl_awal:'';?>" name="tgl_awal">

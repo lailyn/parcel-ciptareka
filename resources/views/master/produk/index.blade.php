@@ -31,10 +31,10 @@
 							<tr>
 								<th class="text-center" style="width: 80px;">ID</th>
 								<th>Name</th>
-								<th>Deskripsi</th>
+								<th>Satuan</th>
 								<th>Harga</th>
-								<th>Tgl Berlaku</th>
-								<th>Tgl Berakhir</th>
+								<!-- <th>Tgl Berlaku</th>
+								<th>Tgl Berakhir</th> -->
 								<th>Keterangan</th>								
 								<th style="width: 10%;">Action</th>
 							</tr>
@@ -46,10 +46,10 @@
 								<tr>
 									<td>{{$key + 1}}</td>                
 									<td>{{ $row->name }}</td>									
-									<td>{{ $row->deskripsi }}</td>									
+									<td>{{ $row->satuan }}</td>									
 									<td>{{ mata_uang_help($row->harga_harian) }}</td>
-									<td>{{ $row->tgl_berlaku }}</td>									
-									<td>{{ $row->tgl_berakhir }}</td>									
+									<!-- <td>{{ $row->tgl_berlaku }}</td>									
+									<td>{{ $row->tgl_berakhir }}</td>									 -->
 									<td>{{ $row->keterangan }}</td>																		
 									<td>
 										<div class="dropdown">

@@ -12,6 +12,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "*",
         "laravel/tinker": "^2.7",
+        "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.3",
         "milon/barcode": "^10.0",
         "ramsey/uuid": "^4.7",

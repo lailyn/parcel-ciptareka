@@ -89,15 +89,18 @@ Route::middleware('auth')->group(function () {
 	});
 	Route::controller(MemberController::class)->name('member.')->prefix('member')->group(function(){
 		Route::get('/index', 'index')->name('index');
+		Route::get('/import', 'import')->name('import');
 		Route::get('/insert', 'insert')->name('insert');
 		Route::post('/create', 'create')->name('create');
+		Route::post('/importPost', 'importPost')->name('importPost');
 		Route::get('/edit/{id}', 'edit')->name('edit');
 		Route::post('/update/{id}', 'update')->name('update');
 		Route::get('/delete/{id}', 'delete')->name('delete');
 		Route::get('/jadiPartner/{id}', 'jadiPartner')->name('jadiPartner');
 		Route::get('/pilihPaket/{id}', 'pilihPaket')->name('pilihPaket');		
+		Route::get('/download', 'download')->name('download');		
 		Route::post('/saveDetail/{id}', 'saveDetail')->name('saveDetail');
-		Route::get('/deleteDetail/{id}/{ids}', 'deleteDetail')->name('deleteDetail');
+		Route::get('/deleteDetail/{id}/{ids}', 'deleteDetail')->name('deleteDetail');		
 	});
 	Route::controller(PartnershipController::class)->name('partnership.')->prefix('partnership')->group(function(){
 		Route::get('/index', 'index')->name('index');

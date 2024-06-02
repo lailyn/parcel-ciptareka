@@ -33,6 +33,7 @@
 								<th>Jenis Paket</th>								
 								<th>Iuran</th>
 								<th>Lama Iuran</th>
+								<th>Deskripsi</th>
 								<th>Periode</th>
 								<th>Tgl Awal</th>
 								<th>Tgl Akhir</th>
@@ -54,6 +55,7 @@
 									<td>{{ $row->jenis_paket }}</td>
 									<td>{{ mata_uang_help($row->iuran) }}</td>
 									<td>{{ $row->lama_iuran }} {{ $row->jenis_lama }}</td>
+									<td>{{ $row->deskripsi }}</td>
 									<td>{{ $row->periode }}</td>
 									<td>{{ $row->tgl_awal }}</td>
 									<td>{{ $row->tgl_akhir }}</td>

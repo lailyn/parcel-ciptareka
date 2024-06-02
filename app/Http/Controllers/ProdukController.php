@@ -34,11 +34,9 @@ class ProdukController extends Controller
 	public function create(Request $request){
 		$data = new ProdukModel;
 		$data->name = $request->name;        
-		$data->deskripsi = $request->deskripsi;        
+		$data->satuan = $request->satuan;        
 		$data->keterangan = $request->keterangan;        
-		$data->harga_harian = $request->harga_harian;        
-		$data->tgl_berlaku = $request->tgl_berlaku;        
-		$data->tgl_berakhir = $request->tgl_berakhir;        		
+		$data->harga_harian = $request->harga_harian;        		
 		$data->created_at = Carbon::now()->toDateTimeString();        		
     $data->save();        
 
@@ -62,11 +60,9 @@ class ProdukController extends Controller
 	public function update($id, Request $request){
 		$data = ProdukModel::find($id);
 		$data->name = $request->name;        
-		$data->deskripsi = $request->deskripsi;        
+		$data->satuan = $request->satuan;        
 		$data->keterangan = $request->keterangan;        
-		$data->harga_harian = $request->harga_harian;        
-		$data->tgl_berlaku = $request->tgl_berlaku;        
-		$data->tgl_berakhir = $request->tgl_berakhir;        		
+		$data->harga_harian = $request->harga_harian;        		
 		$data->updated_at = Carbon::now()->toDateTimeString();
 		
 

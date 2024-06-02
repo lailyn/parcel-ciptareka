@@ -60,6 +60,7 @@ class PaketController extends Controller
 		$data2->tgl_akhir = $request->tgl_akhir;        		
 		$data2->lama_iuran = $request->lama_iuran;        		
 		$data2->jenis_lama = $request->jenis_lama;        		
+		$data2->deskripsi = $request->deskripsi;        		
 		$data2->status =  (!is_null($request->status))?$request->status:0;               
 		$data2->save();
 
@@ -88,7 +89,8 @@ class PaketController extends Controller
 		$data2->tgl_awal = $request->tgl_awal;        		
 		$data2->tgl_akhir = $request->tgl_akhir;        		
 		$data2->lama_iuran = $request->lama_iuran;        		
-		$data2->jenis_lama = $request->jenis_lama;        		
+		$data2->jenis_lama = $request->jenis_lama;  
+		$data2->deskripsi = $request->deskripsi;        		      		
 		$data2->status =  (!is_null($request->status))?$request->status:0;               
 		$data2->save();
 

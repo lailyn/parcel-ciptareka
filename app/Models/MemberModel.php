@@ -10,4 +10,5 @@ class MemberModel extends Model
     use HasFactory;
     protected $table = 'member';
     protected $primaryKey = 'id';    
+    protected $fillable = ['name','no_ktp','no_hp','alamat','kodepos','tgl_lahir'];
 }

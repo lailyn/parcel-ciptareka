@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\DataImport;
 use DB;
 
 class MemberController extends Controller
@@ -20,13 +22,17 @@ class MemberController extends Controller
 	var $folder     = "master/member";
 
 	public function index(){
-		$memberData = MemberModel::orderBy('member.id','DESC')
-					->get(['member.*']);               
+		$id_user_type = session()->get('id_user_type');		
+		$memberData = MemberModel::leftJoin("partnership","member.partnership_id","=","partnership.id")
+					->orderBy('member.id','DESC')->get(['member.*','partnership.name as partner']);               
 		$data['title']  = $this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
 		$data['set']    = "view";		                  
 		return view($this->folder.'/index',$data)->with('member', $memberData);
+	}
+	public function download(){		
+		return view($this->folder.'/template_member');
 	}
 	public function insert(){
 		$data['title']  = "Add ".$this->title;
@@ -45,8 +51,9 @@ class MemberController extends Controller
 		if ($validator) {
 			$data = new MemberModel;
 			$data->name = $request->name;        			
-			$data->code = generateRandomString(3).cariKode_helper("member");;        			
+			$data->code = generateRandomString(3).cariKode_helper("member");        
 			$data->no_ktp = $request->no_ktp;        			
+			$data->tgl_lahir = $request->tgl_lahir;        			
 			$data->no_hp = $request->no_hp;        
 			$data->kecamatan = $request->kecamatan;        
 			$data->kota = $request->kota;        
@@ -88,6 +95,41 @@ class MemberController extends Controller
 		$memberData = MemberModel::find($id);		
 		return view($this->folder.'/insert',$data)->with('member', $memberData);
 	}
+	public function import(){		
+		$data['title']  = "Import ".$this->title;
+		$data['subtitle']  = $this->subtitle;
+		$data['isi']    = $this->set;
+		$data['set']    = "view";			
+		return view($this->folder.'/import',$data);
+	}
+	public function importPost(Request $request){
+		$request->validate([
+        'fileImport' => 'required|mimes:xlsx,csv',
+    ]);
+
+    $file = $request->file('fileImport');	
+
+    
+    try {
+        Excel::import(new DataImport, $file);
+        $this->generateKode();
+        session()->put('msg', setMsg("Success!","success"));        
+				return redirect()->route('member.index');	
+        
+    } catch (\Exception $e) {
+    		session()->put('msg', setMsg($e->getMessage(),"danger"));        
+				return redirect()->route('member.index');	        
+    }	
+	}
+	public function generateKode(){  	
+		$cekData = MemberModel::whereNull("code")->get();
+		foreach($cekData AS $ulang){
+			$datas = MemberModel::find($ulang->id);
+			$datas['code'] = generateRandomString(3).cariKode_helper("member");        			
+			$datas['status'] = 1;
+			$datas->save();
+		}
+  }
 	public function update($id, Request $request){
 		$validator = $request->validate([
 		  'name' => 'required',		  
@@ -99,6 +141,7 @@ class MemberController extends Controller
 			$data = MemberModel::find($id);
 			$data->name = $request->name;        			
 			$data->no_ktp = $request->no_ktp;        			
+			$data->tgl_lahir = $request->tgl_lahir;        			
 			$data->no_hp = $request->no_hp;        
 			$data->kecamatan = $request->kecamatan;        
 			$data->kota = $request->kota;        

@@ -71,6 +71,7 @@
 								</button>
 								<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
 									<a class="dropdown-item" href="{{ route('partnership.edit', $row->id) }}">Edit</a>                         
+									<a class="dropdown-item" href="{{ route('member.insert') }}">Add Member</a> 									
 									<a class="dropdown-item" href="{{ route('partnership.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 									
 								</div>
 							</div>

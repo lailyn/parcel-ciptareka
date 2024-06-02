@@ -62,6 +62,12 @@
 								<input type="text" class="form-control" name="no_hp" value="<?=($row)?$row->no_hp:old('no_hp');?>" placeholder="No HP">
 							</div>
 						</div>						
+						<div class="form-group row">			
+							<label class="col-sm-2 col-form-label">Tgl Lahir</label>
+							<div class="col-sm-4">
+								<input type="date" required class="form-control" name="tgl_lahir" value="<?=($row)?$row->tgl_lahir:old('tgl_lahir');?>" placeholder="Tgl Lahir">
+							</div>													
+						</div>
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label" >Alamat</label>
 							<div class="col-sm-10">
@@ -138,6 +144,7 @@
 
 					<hr>
 
+					<?php if($set=="detail"){ ?>
 					<div class="block-content block-content-full">									
 						<table class="table table-bordered">
 							<thead>
@@ -187,6 +194,7 @@
 							</tbody>
 						</table>
 					</div>
+					<?php } ?>
 
 				</div>			
 			</div>

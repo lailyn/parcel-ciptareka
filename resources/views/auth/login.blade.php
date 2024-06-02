@@ -35,6 +35,11 @@
 		<!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
 		<!-- <link rel="stylesheet" id="css-theme" href="{{ asset('css/themes/amethyst.min.css') }}"> -->
 		<!-- END Stylesheets -->
+		<style type="text/css">
+			input:-webkit-autofill {
+	      -webkit-box-shadow: 0 0 0px 1000px white inset;
+	    }
+		</style>
 	</head>
 	<body>
 		<!-- Page Container -->
@@ -95,12 +100,7 @@
 										<div class="block-content">
 											<div class="p-sm-3 px-lg-4 py-lg-5">
 												<h1 class="mb-2">{{ get_setting('app') }}</h1>
-												<p>Welcome, please login.</p>
-
-												<!-- Sign In Form -->
-												<!-- jQuery Validation (.js-validation-signin class is initialized in js/pages/op_auth_signin.min.js which was auto compiled from _es6/pages/op_auth_signin.js) -->
-												<!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
-												<form class="js-validation-signin" action="{{ route('login.action') }}" method="POST">													
+												<form autocomplete="off" class="js-validation-signin" action="{{ route('login.action') }}" method="POST">													
                           @csrf
                           @method('POST')
 													<div class="py-3">
@@ -113,11 +113,23 @@
 										        @endforeach
 										        @endif
 										        
+
+										        <input type="email" name="hidden" id="hidden" style="width: 0; height: 0; border: 0; padding: 0" />
+														<input type="password" name="hidden" id="hidden" style="width: 0; height: 0; border: 0; padding: 0" />
+														
 														<div class="form-group">
-															<input type="text" class="form-control form-control-alt form-control-lg" id="login-username" name="username" placeholder="Username">
+															<input type="text" class="form-control form-control-alt form-control-lg" id="login-username" name="username" placeholder="Username atau ID Member">
 														</div>
 														<div class="form-group">
-															<input type="password" class="form-control form-control-alt form-control-lg" id="login-password" name="password" placeholder="Password">
+															<input type="password" autocomplete="new-password" class="form-control form-control-alt form-control-lg" id="login-password" name="password" placeholder="Password atau Tgl Lahir">
+														</div>									
+														<div class="form-group">
+															<select required class="form-control form-control-alt form-control-lg" name="tipe">
+																<option value="">- pilih role -</option>
+																<option value="member">Membership</option>
+																<option value="partner">Partnership</option>
+																<option value="management">Management</option>
+															</select>
 														</div>									
 														<div class="form-group">
 															<div class="captcha">
@@ -135,9 +147,10 @@
 														</div>					
 														<div class="form-group">			                  
 															<button type="submit" class="btn btn-block btn-success">
-																<i class="fa fa-fw fa-sign-in-alt mr-1"></i> Enter Me
+																<i class="fa fa-fw fa-sign-in-alt mr-1"></i> Enter
 															</button>
-														</div>
+														</div>														
+														<p>Membership login menggunakan ID Member dan Tgl Lahir <b>(YYYYMMDD, cth: 19901230)</b></p>
 													</div>
 												</form>
 												<!-- END Sign In Form -->
@@ -205,7 +218,8 @@
 		  });
 		});
 
-
+		    
 		</script>
+		
 	</body>
 </html>

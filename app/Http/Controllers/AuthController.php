@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\MyTestMail;
 use Illuminate\Support\Facades\Mail;
+use DB;
+
 
 class AuthController extends Controller
 {
@@ -21,13 +23,7 @@ class AuthController extends Controller
 	  return view('user/register', $data);
   }
   public function register_action()
-  {
-    // $request->validate([
-    //   'name' => 'required',
-    //   'username' => 'required|unique:tb_user',
-    //   'password' => 'required',
-    //   'password_confirm' => 'required|same:password',
-    // ]);
+  {    
 
     $user = new User([
 	    'name' => "Admin",
@@ -44,22 +40,53 @@ class AuthController extends Controller
       $request->validate([
           'username' => 'required',
           'password' => 'required',
+          'tipe' => 'required',
           'captcha' => 'required|captcha'
       ],
       ['captcha.captcha'=>'Invalid captcha code!']);
 
-
-      if (Auth::attempt(['email' => $request->username, 'password' => $request->password])) {          
+      if($request->tipe=="member"){
+        $tgl_lahir = strlen($request->password);
+        if($tgl_lahir!=8){
+          return back()->withErrors(['password' => 'Format Tgl Lahir Salah! Contoh: 19901231']);
+          exit();
+        }
+        $year = substr($request->password, 0, 4);
+        $month = substr($request->password, 4, 2);
+        $day = substr($request->password, 6, 2);
+        $tgl_lahir_baru = $year . '-' . $month . '-' . $day;
+        $cekData = DB::table("member")->where("code",$request->username)->where("tgl_lahir", $tgl_lahir_baru)->get();
+        if($cekData->count()>0){
+          if($cekData->first()->status==1){
+            session([
+              'id' => $cekData->first()->id,
+              'id_user_type' => 0,
+              'tipe' => $request->tipe,
+              'username' => $request->username            
+            ]);
+            return redirect()->intended('/dashboard-member');
+          }else{
+            return back()->withErrors(['password' => 'Member sudah tidak aktif!']);
+            exit();
+          }
+        }else{
+          return back()->withErrors(['password' => 'Data tidak ditemukan!']);
+          exit();
+        }
+      }else{
+        if (Auth::attempt(['email' => $request->username, 'password' => $request->password])) {          
           $request->session()->regenerate();
           $user = Auth::user()->getAttributes();                    
           
           session([
             'id' => $user['id'],                        
             'id_user_type' => $user['id_user_type'],                        
+            'tipe' => $request->tipe,
             'username' => $request->username            
           ]);
           return redirect()->intended('/dashboard');
-      }      
+        }      
+      }
 
       return back()->withErrors([
           'password' => 'Wrong username or password',

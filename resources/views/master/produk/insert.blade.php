@@ -54,12 +54,12 @@
 							</div>
 						</div>				
 						<div class="form-group row">
-							<label class="col-sm-2 col-form-label" >Deskripsi</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" name="deskripsi" value="<?=($row)?$row->deskripsi:'';?>" placeholder="Deskripsi">
+							<label class="col-sm-2 col-form-label" >Satuan</label>
+							<div class="col-sm-4">
+								<input type="text" class="form-control" name="satuan" value="<?=($row)?$row->satuan:'';?>" placeholder="Satuan">
 							</div>
 						</div>				
-						<div class="form-group row">
+						<!-- <div class="form-group row">
 							<label class="col-sm-2 col-form-label" >Tgl Berlaku</label>
 							<div class="col-sm-2">
 								<input type="date" class="form-control" name="tgl_berlaku">
@@ -67,7 +67,7 @@
 							<div class="col-sm-2">
 								<input type="date" class="form-control" name="tgl_berakhir">
 							</div>
-						</div>									
+						</div>									 -->
 						<div class="form-group row">
 							<div class="col-sm-10 ml-auto">
 								<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
