@@ -143,6 +143,7 @@ class KaryawanController extends Controller
 		$pwd = get_setting('password_default');
 		$data->password = Hash::make($pwd);        		
 		$data->id_user_type = 2;
+		$data->jenis = "karyawan";
 		$data->karyawan_id = $amb->id;        
 		$data->status = 1;		
 		$data->updated_at = Carbon::now()->toDateTimeString();

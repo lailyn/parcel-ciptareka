@@ -54,9 +54,9 @@
 							</div>							
 						</div>					
 						<div class="form-group row">
-							<label class="col-sm-2 col-form-label">Email</label>
+							<label class="col-sm-2 col-form-label">Email/No HP</label>
 							<div class="col-sm-4">
-								<input type="email" class="form-control" name="email" value="<?=($row)?$row->email:'';?>" placeholder="Email">
+								<input type="text" class="form-control" name="email" value="<?=($row)?$row->email:'';?>" placeholder="Email">
 							</div>
 							<label class="col-sm-2 col-form-label">Password</label>
 							<div class="col-sm-4">

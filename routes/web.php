@@ -13,6 +13,9 @@ use App\Http\Controllers\PartnershipController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\UserTypeController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\SetoranPaketController;
+use App\Http\Controllers\PengembalianSetoranController;
+use App\Http\Controllers\SetoranManajemenController;
 
 
 /*
@@ -108,9 +111,49 @@ Route::middleware('auth')->group(function () {
 		Route::post('/create', 'create')->name('create');
 		Route::get('/edit/{id}', 'edit')->name('edit');
 		Route::post('/update/{id}', 'update')->name('update');
-		Route::get('/delete/{id}', 'delete')->name('delete');		
+		Route::get('/delete/{id}', 'delete')->name('delete');	
+		Route::get('/akun/{id}', 'akun')->name('akun');	
 	});
 
+	Route::controller(KaryawanController::class)->name('karyawan.')->prefix('karyawan')->group(function(){
+		Route::get('/index', 'index')->name('index');
+		Route::get('/insert', 'insert')->name('insert');
+		Route::post('/create', 'create')->name('create');
+		Route::post('/saveCakupan', 'saveCakupan')->name('saveCakupan');
+		Route::get('/edit/{id}', 'edit')->name('edit');
+		Route::get('/akun/{id}', 'akun')->name('akun');
+		Route::get('/cakupan/{id}', 'cakupan')->name('cakupan');
+		Route::post('/update/{id}', 'update')->name('update');
+		Route::get('/delete/{id}', 'delete')->name('delete');
+		Route::get('/delCakupan/{id}', 'delCakupan')->name('delCakupan');
+	});
+	Route::controller(SetoranPaketController::class)->name('setoranPaket.')->prefix('setoranPaket')->group(function(){
+		Route::get('/index', 'index')->name('index');
+		Route::get('/insert', 'insert')->name('insert');
+		Route::post('/create', 'create')->name('create');		
+		Route::get('/edit/{id}', 'edit')->name('edit');		
+		Route::post('/update/{id}', 'update')->name('update');
+		Route::get('/delete/{id}', 'delete')->name('delete');		
+		Route::get('/submit/{id}', 'submit')->name('submit');		
+	});
+	Route::controller(PengembalianSetoranController::class)->name('pengembalianSetoran.')->prefix('pengembalianSetoran')->group(function(){
+		Route::get('/index', 'index')->name('index');
+		Route::get('/insert', 'insert')->name('insert');
+		Route::post('/create', 'create')->name('create');		
+		Route::get('/edit/{id}', 'edit')->name('edit');		
+		Route::post('/update/{id}', 'update')->name('update');
+		Route::get('/delete/{id}', 'delete')->name('delete');		
+		Route::get('/submit/{id}', 'submit')->name('submit');		
+	});
+	Route::controller(SetoranManajemenController::class)->name('setoranManajemen.')->prefix('setoranManajemen')->group(function(){
+		Route::get('/index', 'index')->name('index');
+		Route::get('/insert', 'insert')->name('insert');
+		Route::post('/create', 'create')->name('create');		
+		Route::get('/edit/{id}', 'edit')->name('edit');		
+		Route::post('/update/{id}', 'update')->name('update');
+		Route::get('/delete/{id}', 'delete')->name('delete');		
+		Route::get('/submit/{id}', 'submit')->name('submit');		
+	});
 
 
 
@@ -208,18 +251,7 @@ Route::middleware('auth')->group(function () {
 		Route::get('/delete/{id}', 'delete')->name('delete');
 	});
 
-	Route::controller(KaryawanController::class)->name('karyawan.')->prefix('karyawan')->group(function(){
-		Route::get('/index', 'index')->name('index');
-		Route::get('/insert', 'insert')->name('insert');
-		Route::post('/create', 'create')->name('create');
-		Route::post('/saveCakupan', 'saveCakupan')->name('saveCakupan');
-		Route::get('/edit/{id}', 'edit')->name('edit');
-		Route::get('/akun/{id}', 'akun')->name('akun');
-		Route::get('/cakupan/{id}', 'cakupan')->name('cakupan');
-		Route::post('/update/{id}', 'update')->name('update');
-		Route::get('/delete/{id}', 'delete')->name('delete');
-		Route::get('/delCakupan/{id}', 'delCakupan')->name('delCakupan');
-	});
+	
 
 	Route::controller(JenisKendaraanController::class)->name('jenis_kendaraan.')->prefix('jenis_kendaraan')->group(function(){
 		Route::get('/index', 'index')->name('index');

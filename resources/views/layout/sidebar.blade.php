@@ -54,6 +54,57 @@
 					<span class="nav-main-link-name">Partnership</span>
 				</a>
 			</li>
+			<?php       
+      $act="";$show="";
+      if(setMenu('setoranPaket')!=''){           
+        $show = 'd-none';                        
+      }else{            
+        if($isi=='setoranPaket'){
+          $act = "active"; 
+          $show = "menu-open"; 
+        }
+      }              
+      ?>
+			<li class="nav-main-item">
+				<a class="nav-main-link {{ $act }}" href="{{ route('setoranPaket.index') }}">
+					<i class="nav-main-link-icon si si-energy"></i>
+					<span class="nav-main-link-name">Setoran Paket</span>
+				</a>
+			</li>
+			<?php       
+      $act="";$show="";
+      if(setMenu('pengembalianSetoran')!=''){           
+        $show = 'd-none';                        
+      }else{            
+        if($isi=='pengembalianSetoran'){
+          $act = "active"; 
+          $show = "menu-open"; 
+        }
+      }              
+      ?>
+			<li class="nav-main-item">
+				<a class="nav-main-link {{ $act }}" href="{{ route('pengembalianSetoran.index') }}">
+					<i class="nav-main-link-icon si si-energy"></i>
+					<span class="nav-main-link-name">Pengembalian Setoran</span>
+				</a>
+			</li>
+			<?php       
+      $act="";$show="";
+      if(setMenu('setoranManajemen')!=''){           
+        $show = 'd-none';                        
+      }else{            
+        if($isi=='setoranManajemen'){
+          $act = "active"; 
+          $show = "menu-open"; 
+        }
+      }              
+      ?>
+			<li class="nav-main-item">
+				<a class="nav-main-link {{ $act }}" href="{{ route('setoranManajemen.index') }}">
+					<i class="nav-main-link-icon si si-energy"></i>
+					<span class="nav-main-link-name">Setoran Manajemen</span>
+				</a>
+			</li>
 			
 
 			

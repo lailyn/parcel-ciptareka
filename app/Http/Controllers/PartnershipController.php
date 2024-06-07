@@ -13,8 +13,8 @@ use DB;
 class PartnershipController extends Controller
 {
 	var $set        = "partnership";
-	var $title      = "Partnershipship";
-	var $subtitle   = "Partnershipship";
+	var $title      = "Partnership";
+	var $subtitle   = "Partnership";
 	var $folder     = "master/partnership";
 
 	public function index(){
@@ -25,6 +25,30 @@ class PartnershipController extends Controller
 		$data['isi']    = $this->set;
 		$data['set']    = "view";		                  
 		return view($this->folder.'/index',$data)->with('partnership', $partnershipData);
+	}
+	public function akun($id){		
+		$amb = PartnershipModel::find($id);		
+
+		$cek = User::where("email",$amb->no_hp)->get();
+		if($cek->count()){
+			$data = User::find($cek->first()->id);
+		}else{
+			$data = new User;
+		}		
+		$data->email = $amb->no_hp;        
+		$data->name = $amb->name;        
+		$data->no_hp =$amb->no_hp;
+		$pwd = get_setting('password_default');
+		$data->password = Hash::make($pwd);        		
+		$data->id_user_type = 3;
+		$data->jenis = "partnership";
+		$data->partnership_id = $amb->id;        
+		$data->status = 1;		
+		$data->updated_at = Carbon::now()->toDateTimeString();
+		
+		$data->save();    
+		session()->put('msg', setMsg("Successed!","success"));        
+		return redirect()->route('karyawan.index');
 	}
 	public function insert(){
 		$data['title']  = "Add ".$this->title;

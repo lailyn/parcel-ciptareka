@@ -21,7 +21,7 @@
 			<div class="block">
 				<div class="block-header block-header-default">
 					<h3 class="block-title">
-						<a class="btn btn-danger btn-sm float-right" href="{{ route('partnership.insert') }}"> <i class="fa fa-plus"></i> Add Partnership</a>
+						<a class="btn btn-danger btn-sm float-right" href="{{ route('pengembalianSetoran.insert') }}"> <i class="fa fa-plus"></i> Add New</a>
 					</h3>
 				</div>
 				<div class="block-content block-content-full">					
@@ -31,35 +31,39 @@
 							<tr>
 								<th class="text-center" style="width: 80px;">ID</th>								
 								<th>Kode</th>								
-								<th>Partnership</th>								
-								<th>No.HP</th>
-								<th>No.KTP</th>																
-								<th>Alamat</th>																								
-								<th>Member</th>																
+								<th>Member</th>								
+								<th>Paket</th>								
+								<th>Tgl.Pengembalian</th>
+								<th>Nominal</th>																
+								<th>Penerima</th>																
+								<th>% Manajemen</th>																
+								<th>% Partner</th>																								
+								<th>Keterangan</th>																								
 								<th style="width: 10%;">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-						
-						@foreach ($partnership as $key => $row)
-							<?php
-							if($row->status==1) $status = "<label class='badge badge-success'>aktif</label>";
-								else $status = "<label class='badge badge-danger'>non-aktif</label>";
-							$member = "";
-							$cek = DB::table("member")->where("partnership_id",$row->id)->get(["member.name"]);
-							foreach ($cek as $is => $value) {
-								if($member!='') $member.=", ";
-								$member.=$value->name;
+						<?php $gtotal=0; ?>
+						@foreach ($pengembalianSetoran as $key => $row)							
+							<?php 
+							if($row->submit==1){
+								$status = 'd-none';
+								$label = "<label class='badge badge-success'>submitted</label>";
+							}else{
+								$status = '';$label = "";
 							}
 							?>
 							<tr>
 							<td>{{$key + 1}}</td>                							
-							<td>{{ $row->code }}</td>							
-							<td>{{ $row->name }} {!! $status !!}</td>							
-							<td>{{ $row->no_hp }}</td>
-							<td>{{ $row->no_ktp }}</td>
-							<td>{{ $row->alamat }}</td>							
-							<td>{{ $member }}</td>																					
+							<td>{{ $row->code }} {!! $label !!}</td>							
+							<td>{{ $row->namaMember }}</td>							
+							<td>{{ $row->namaPaket }}</td>							
+							<td>{{ $row->tgl_pengembalian }}</td>
+							<td>{{ mata_uang_help($row->nominal) }}</td>
+							<td>{{ $row->penerima_pengembalian }}</td>							
+							<td>{{ $row->presentase_manajemen }}</td>							
+							<td>{{ $row->presentase_partner }}</td>							
+							<td>{{ $row->keterangan }}</td>																					
 							<td>
 								<div class="dropdown">
 								<button class="btn btn-circle btn-sm btn-warning" type="button"
@@ -67,23 +71,28 @@
 									aria-expanded="false"> Action <i class="fas fa-chevron-down"></i>
 								</button>
 								<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item" href="{{ route('partnership.edit', $row->id) }}">Edit</a>                         
-									<a class="dropdown-item" href="{{ route('member.insert') }}">Add Member</a> 									
-									<a class="dropdown-item" href="{{ route('partnership.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 									
-									<a class="dropdown-item" href="{{ route('partnership.akun', $row->id) }}">Generate Akun</a> 									
+									<a class="dropdown-item <?=$status?>" href="{{ route('pengembalianSetoran.edit', $row->id) }}">Edit</a>                         									
+									<a class="dropdown-item <?=$status?>" href="{{ route('pengembalianSetoran.submit', $row->id) }}">Submit</a>                         									
+									<a class="dropdown-item <?=$status?>" href="{{ route('pengembalianSetoran.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 																		
 								</div>
 							</div>
 							</td>
 							</tr>
-								
+							
+							<?php $gtotal+=$row->nominal; ?>
 							@endforeach
 
 						</tbody>
+						<tfoot>
+							<tr>
+								<th colspan="5">TOTAL</th>
+								<th><?=mata_uang_help($gtotal)?></th>
+								<th colspan="5"></th>
+							</tr>
+						</tfoot>
 					</table>
 				</div>			
 			</div>
 	</main>
 @endsection
 
-
-{{-- <script src="{{ asset('js/pages/be_tables_datatables.min.js') }}"></script> --}}
