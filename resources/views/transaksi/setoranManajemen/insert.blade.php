@@ -56,7 +56,7 @@
 						<div class="form-group row">										
 							<label class="col-sm-2 col-form-label">Tgl Setor</label>
 							<div class="col-sm-3">
-								<input type="date" required class="form-control" name="tgl_pengembalian" value="<?=($row)?$row->tgl_pengembalian:date("Y-m-d");?>" placeholder="Tgl Pengembalian">
+								<input type="date" required class="form-control" name="tgl_setor" value="<?=($row)?$row->tgl_setor:date("Y-m-d");?>" placeholder="Tgl Setor">
 							</div>																				
 	          </div>
 	          <div class="form-group row">										
@@ -66,13 +66,17 @@
 							</div>						
 							<label class="col-sm-2 col-form-label">Penerima</label>
 							<div class="col-sm-3">
-								<input type="text" class="form-control" name="penerima_pengembalian" value="<?=($row)?$row->penerima_pengembalian:old('penerima_pengembalian');?>" placeholder="Penerima">
+								<input type="text" class="form-control" name="penerima_setoran" value="<?=($row)?$row->penerima_setoran:old('penerima_setoran');?>" placeholder="Penerima">
 							</div>													
 	          </div>
+	          <hr>
+	          <span id="tabelKan">
+							<div id="tabeldata" class="table-responsive"></div>
+						</span>
 						<div class="form-group row">
 							<div class="col-sm-10 ml-auto">
 								<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-								<button type="reset" class="btn btn-default">Reset</button>
+								<button type="button" onclick="window.location.reload()" class="btn btn-default">Reset</button>
 							</div>
 						</div>
 					</form>
@@ -137,8 +141,27 @@
 function pilih(id, name){	
 	$('#studentModal').modal('hide');
 	$("#partnership_id").val(id);
-	$("#name").val(name);		
+	$("#name").val(name);	
+	tampilData();	
 }
+
+function tampilData(){
+	let partnership_id = $("#partnership_id").val();		
+	$.ajax({
+    url : "{{ route('setoranManajemen.tampilData') }}",
+    type:'POST',
+    data: {
+      _token: '{!! csrf_token() !!}',        
+      partnership_id: partnership_id, 
+      kode: '', 
+      mode: 'insert',               
+    },
+    success: function(data) {
+      $('#tabeldata').html(data);
+    }
+  });
+}
+
 </script>
 @endsection
 

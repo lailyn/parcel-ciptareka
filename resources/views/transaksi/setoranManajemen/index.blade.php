@@ -36,8 +36,7 @@
 								<th>Tgl.Setor</th>
 								<th>Nominal</th>																
 								<th>Penerima</th>																								
-								<th>Keterangan</th>																								
-								<th style="width: 10%;">Action</th>
+								<th>Keterangan</th>																																
 							</tr>
 						</thead>
 						<tbody>
@@ -52,26 +51,14 @@
 							}
 							?>
 							<tr>
-							<td>{{$key + 1}}</td>                							
-							<td>{{ $row->code }} {!! $label !!}</td>							
-							<td>{{ $row->namaMember }}</td>							
-							<td>{{ $row->namaPartner }}</td>							
-							<td>{{ $row->tgl_setor }}</td>
-							<td>{{ mata_uang_help($row->nominal) }}</td>
-							<td>{{ $row->penerima }}</td>														
-							<td>{{ $row->keterangan }}</td>																					
-							<td>
-								<div class="dropdown">
-								<button class="btn btn-circle btn-sm btn-warning" type="button"
-									id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false"> Action <i class="fas fa-chevron-down"></i>
-								</button>
-								<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item <?=$status?>" href="{{ route('setoranManajemen.edit', $row->id) }}">Edit</a>                         									
-									<a class="dropdown-item <?=$status?>" href="{{ route('setoranManajemen.submit', $row->id) }}">Submit</a>                         									
-									<a class="dropdown-item <?=$status?>" href="{{ route('setoranManajemen.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 																		
-								</div>
-							</div>
+								<td>{{$key + 1}}</td>                							
+								<td>{{ $row->code }} {!! $label !!}</td>							
+								<td>{{ $row->namaMember }}</td>							
+								<td>{{ $row->namaPartner }}</td>							
+								<td>{{ $row->tgl_setor }}</td>
+								<td>{{ mata_uang_help($row->nominal) }}</td>
+								<td>{{ $row->penerima }}</td>														
+								<td>{{ $row->keterangan }}</td>																												
 							</td>
 							</tr>
 							

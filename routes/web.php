@@ -148,6 +148,7 @@ Route::middleware('auth')->group(function () {
 	Route::controller(SetoranManajemenController::class)->name('setoranManajemen.')->prefix('setoranManajemen')->group(function(){
 		Route::get('/index', 'index')->name('index');
 		Route::get('/insert', 'insert')->name('insert');
+		Route::post('/tampilData', 'tampilData')->name('tampilData');		
 		Route::post('/create', 'create')->name('create');		
 		Route::get('/edit/{id}', 'edit')->name('edit');		
 		Route::post('/update/{id}', 'update')->name('update');
