@@ -44,8 +44,7 @@ class SetoranManajemenController extends Controller
 			    ->join('member_paket', 'setoranPaket.member_paket_id', '=', 'member_paket.id')
 			    ->join('member', 'member_paket.member_id', '=', 'member.id')
 			    ->join('paket', 'member_paket.paket_id', '=', 'paket.id')
-			    ->where('member.partnership_id', $partnership_id)
-			    ->where('setoranPaket.submit', 1)
+			    ->where('member.partnership_id', $partnership_id)			    
 			    ->whereNull('setoranPaket.setor_at')
 			    ->groupBy('member.id', 'member.name', 'paket.name', 'setoranPaket.tgl_setor')
 			    ->select(

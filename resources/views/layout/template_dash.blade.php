@@ -24,6 +24,7 @@
 		<link rel="icon" type="image/png" sizes="192x192" href="{{ asset('ima49es/'.get_setting('favicon')) }}">
 		<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('ima49es/'.get_setting('favicon')) }}">
 		<!-- END Icons -->
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.css" />
 		<link rel="stylesheet" href="{{ asset('js/plugins/datatables/dataTables.bootstrap4.css') }}">
 		<!-- Stylesheets -->
 		<!-- Fonts and OneUI framework -->
@@ -461,6 +462,8 @@
 		<script src="{{ asset('js/plugins/datatables/buttons/buttons.colVis.min.js') }}"></script>
 		<script src="{{ asset('js/plugins/select2/js/select2.full.min.js') }}"></script>
 		
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js"></script>
 
 			
 
@@ -514,6 +517,46 @@
       caret_pos = updated_len - original_len + caret_pos;
       input[0].setSelectionRange(caret_pos, caret_pos);
     }
+
+    
+		$(document).ready(function() {
+		    $('.daterange').daterangepicker({
+		        opens: 'left',
+		        locale: {
+		            format: 'YYYY-MM-DD'
+		        }
+		    }, function(start, end, label) {
+		        // Event listener untuk saat range dipilih
+		        $('.daterange').on('apply.daterangepicker', function(ev, picker) {
+		            var startDate = picker.startDate;
+		            var endDate = picker.endDate;
+		            var diffDays = endDate.diff(startDate, 'days');
+
+		            var inputId = $(this).attr('id');
+				        var key = inputId.split('_')[2]; // Ekstrak nomor ID
+				        
+				        $('#lamaAsli_' + key).val(diffDays);
+				        cekLamaPalsu(key);
+				        kalikanNominal(key);
+		        });
+		    });
+		    
+		});
+
+		function cekLamaPalsu(key){
+			let lamaAsli = $("#lamaAsli_"+key).val();
+			let lamaPalsu = $("#lama_"+key).val();
+			let jenis = lamaPalsu.split(' ')[1];			
+			$("#lama_"+key).val(lamaAsli+' '+jenis);
+		}
+		function kalikanNominal(key){
+			let lamaAsli = $("#lamaAsli_"+key).val();	
+			let nominal = $("#nominal_"+key).val();	
+			let hasil = parseInt(lamaAsli) * parseInt(nominal);
+			$("#nominal_"+key).val(hasil);	
+		}
+		
+
     </script>
 	</body>
 </html>

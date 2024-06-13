@@ -131,10 +131,12 @@ Route::middleware('auth')->group(function () {
 		Route::get('/index', 'index')->name('index');
 		Route::get('/insert', 'insert')->name('insert');
 		Route::post('/create', 'create')->name('create');		
+		Route::post('/createAll', 'createAll')->name('createAll');		
 		Route::get('/edit/{id}', 'edit')->name('edit');		
 		Route::post('/update/{id}', 'update')->name('update');
 		Route::get('/delete/{id}', 'delete')->name('delete');		
 		Route::get('/submit/{id}', 'submit')->name('submit');		
+		Route::get('/addDetail', 'addDetail')->name('addDetail');		
 	});
 	Route::controller(PengembalianSetoranController::class)->name('pengembalianSetoran.')->prefix('pengembalianSetoran')->group(function(){
 		Route::get('/index', 'index')->name('index');

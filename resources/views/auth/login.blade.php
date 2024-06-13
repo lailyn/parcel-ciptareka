@@ -118,19 +118,12 @@
 														<input type="password" name="hidden" id="hidden" style="width: 0; height: 0; border: 0; padding: 0" />
 														
 														<div class="form-group">
-															<input type="text" class="form-control form-control-alt form-control-lg" id="login-username" name="username" placeholder="Username atau ID Member">
+															<input type="text" class="form-control form-control-alt form-control-lg" id="login-username" name="username" placeholder="Username">
 														</div>
 														<div class="form-group">
-															<input type="password" autocomplete="new-password" class="form-control form-control-alt form-control-lg" id="login-password" name="password" placeholder="Password atau Tgl Lahir">
-														</div>									
-														<div class="form-group">
-															<select required class="form-control form-control-alt form-control-lg" name="tipe">
-																<option value="">- pilih role -</option>
-																<option value="member">Membership</option>
-																<option value="partner">Partnership</option>
-																<option value="management">Management</option>
-															</select>
-														</div>									
+															<input type="hidden" value="management" name="tipe">
+															<input type="password" autocomplete="new-password" class="form-control form-control-alt form-control-lg" id="login-password" name="password" placeholder="Password">
+														</div>																							
 														<div class="form-group">
 															<div class="captcha">
 			                          <span>{!! captcha_img() !!}</span>
@@ -149,8 +142,11 @@
 															<button type="submit" class="btn btn-block btn-success">
 																<i class="fa fa-fw fa-sign-in-alt mr-1"></i> Enter
 															</button>
+															<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-block btn-warning">
+																<i class="fa fa-fw fa-users mr-1"></i> Membership
+															</button>
 														</div>														
-														<p>Membership login menggunakan ID Member dan Tgl Lahir <b>(YYYYMMDD, cth: 19901230)</b></p>
+														<!-- <p>Membership login menggunakan ID Member dan Tgl Lahir <b>(YYYYMMDD, cth: 19901230)</b></p> -->
 													</div>
 												</form>
 												<!-- END Sign In Form -->
@@ -173,6 +169,32 @@
 		</div>
 		<!-- END Page Container -->
 
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Membership</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form action="" method="POST">
+		        	<div class="form-group">
+								<input type="text" class="form-control form-control-alt form-control-lg" name="no_id" placeholder="No ID">
+							</div>
+							<div class="form-group">								
+								<input type="date" autocomplete="new-password" class="form-control form-control-alt form-control-lg" name="tgl_lahir" placeholder="Tgl Lahir">
+							</div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Lihat Dashboard</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 		<!--
 			OneUI JS Core
 

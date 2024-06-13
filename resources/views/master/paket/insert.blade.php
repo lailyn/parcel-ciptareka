@@ -58,12 +58,17 @@
 							</div>
 							<label class="col-sm-1 col-form-label">Periode</label>
 							<div class="col-sm-2">		                   	                
-                <select <?=$dis?> class="form-control select2" id="periode_id" name="periode_id" required>
+                <select readonly <?=$dis?> class="form-control select2" id="periode_id" name="periode_id" required>
 									<option value="">- choose -</option>
 									@foreach ($periode as $key => $dt)
-										@php
-										if($row && $dt->id==$row->periode_id) $sel = 'selected';
-											else $sel = '';
+										@php									
+										if(!$row && $dt->status==1){
+											$sel = "selected";
+										}elseif($row && $dt->id==$row->periode_id){ 
+											$sel = 'selected';
+										}else{ 
+											$sel = "";
+										}
 										@endphp
 										<option <?=$sel?> value="{{ $dt->id }}">{{ $dt->name }} </option>
 									@endforeach
@@ -120,7 +125,9 @@
 						</div>
 					</form>
 					<hr>
-
+					<?php
+					if($set=="detail"){ 
+					?>
 					<div class="block-content block-content-full">									
 						<table class="table table-bordered">
 							<thead>
@@ -170,12 +177,27 @@
 							</tbody>
 						</table>
 					</div>
+				<?php } ?>
 
 
 				</div>			
 			</div>
 		</div>
 	</main>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function () {
+  const select = document.getElementById('periode_id');
+  const readonlyValue = select.value;
+
+  select.addEventListener('change', function () {
+      if (select.value !== readonlyValue) {
+          select.value = readonlyValue;
+      }
+  });
+});
+</script>
+
 @endsection
 
 

@@ -67,8 +67,7 @@
 									aria-expanded="false"> Action <i class="fas fa-chevron-down"></i>
 								</button>
 								<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.edit', $row->id) }}">Edit</a>                         									
-									<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.submit', $row->id) }}">Submit</a>                         									
+									<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.edit', $row->id) }}">Edit</a>                         																		
 									<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 																		
 								</div>
 							</div>

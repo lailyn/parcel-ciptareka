@@ -62,6 +62,7 @@ class AuthController extends Controller
               'id' => $cekData->first()->id,
               'id_user_type' => 0,
               'tipe' => $request->tipe,
+              'jenis' => 'member',
               'username' => $request->username            
             ]);
             return redirect()->intended('/dashboard-member');
@@ -82,6 +83,8 @@ class AuthController extends Controller
             'id' => $user['id'],                        
             'id_user_type' => $user['id_user_type'],                        
             'tipe' => $request->tipe,
+            'jenis' => $user['jenis'],
+            'partnership_id' => $user['partnership_id'],
             'username' => $request->username            
           ]);
           return redirect()->intended('/dashboard');
