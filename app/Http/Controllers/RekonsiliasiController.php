@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SetoranManajemenModel;
-use App\Models\SetoranManajemenDetailModel;
-use App\Models\SetoranPaketModel;
+use App\Models\RekonsiliasiModel;
+use App\Models\RekonsiliasiDetailModel;
+use App\Models\PeriodeModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,54 +12,46 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
 
-class SetoranManajemenController extends Controller
+class RekonsiliasiController extends Controller
 {
-	var $set        = "setoranManajemen";
-	var $title      = "Setoran Manajemen";
-	var $subtitle   = "Setoran Manajemen";
-	var $folder     = "transaksi/setoranManajemen";
+	var $set        = "rekonsiliasi";
+	var $title      = "Rekonsiliasi";
+	var $subtitle   = "Rekonsiliasi";
+	var $folder     = "transaksi/rekonsiliasi";
 
 	public function index(){
-		$setoranManajemenData = SetoranManajemenModel::join("partnership","setoranManajemen.partnership_id","=","partnership.id")
-					->orderBy('setoranManajemen.id','DESC')
-					->get(['setoranManajemen.*','partnership.name AS namaPartner']);               
+		$rekonsiliasiData = RekonsiliasiModel::orderBy('periode_rekonsiliasi.id','DESC')
+					->get(['periode_rekonsiliasi.*']);               
 		$data['title']  = $this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
 		$data['set']    = "view";		                  
-		return view($this->folder.'/index',$data)->with('setoranManajemen', $setoranManajemenData);
+		return view($this->folder.'/index',$data)->with('rekonsiliasi', $rekonsiliasiData);
 	}	
 	public function insert(){
 		$data['title']  = "Add ".$this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
-		$data['set']    = "insert";		
-		$data['memberPaket'] = DB::table("member")->join("member_paket","member.id","=","member_paket.member_id")
-						->join("paket","member_paket.paket_id","=","paket.id")->get(["member_paket.id","member.name AS namaMember","paket.name AS namaPaket"]);
+		$data['set']    = "insert";
+		$data['periode'] = PeriodeModel::where("status",1)->get();						
 		return view($this->folder.'/insert',$data);
 	}	
 	public function tampilData(Request $request){		
-		$data['partnership_id'] = $partnership_id = $request->partnership_id;		
-		// $data['setoranPaket'] = DB::table('setoranPaket')
-		// 	    ->join('member_paket', 'setoranPaket.member_paket_id', '=', 'member_paket.id')
-		// 	    ->join('member', 'member_paket.member_id', '=', 'member.id')
-		// 	    ->join('paket', 'member_paket.paket_id', '=', 'paket.id')
-		// 	    ->where('member.partnership_id', $partnership_id)			    
-		// 	    ->whereNull('setoranPaket.setor_at')
-		// 	    ->groupBy('member.id', 'member.name', 'paket.name', 'setoranPaket.tgl_setor')
-		// 	    ->select(
-		// 	        'member.name AS namaMember',
-		// 	        DB::raw('SUM(setoranPaket.nominal) AS totalNominal'),
-		// 	        'setoranPaket.id AS ids',			        
-		// 	    )
-		// 	    ->get();
-		$data['setoranPaket'] = DB::table('setoranPaket')
-			    ->join('member_paket', 'setoranPaket.member_paket_id', '=', 'member_paket.id')
-			    ->join('member', 'member_paket.member_id', '=', 'member.id')
+	// public function tampilData(){		
+		$data['periode'] = $periode = $request->periode;		
+		$data['tgl_mulai'] = $tgl_mulai = $request->tgl_mulai;		
+		$data['tgl_selesai'] = $tgl_selesai = $request->tgl_selesai;	
+
+		$data['rekonsiliasi'] = DB::table('setoranPaket')
+					->join("member_paket","setoranPaket.member_paket_id","=","member_paket.id")
+					->join('member', 'member_paket.member_id', '=', 'member.id')
 			    ->join('paket', 'member_paket.paket_id', '=', 'paket.id')
-			    ->where('member.partnership_id', $partnership_id)			    
-			    ->whereNull('setoranPaket.setor_at')			    
-			    ->get(['member.name AS namaMember','setoranPaket.id AS ids','setoranPaket.nominal AS totalNominal']);
+			    ->where('paket.periode_id', $periode)			    
+			    // ->whereRaw("setoranPaket.tgl_setor BETWEEN $tgl_mulai AND $tgl_selesai")			    
+			    ->whereNotNull('setoranPaket.setor_at')
+			    ->groupBy('member.id')			    
+			    ->get(["member.id AS ids","member.name AS namaMember"]);
+		$data['selisih'] = cariSelisih($tgl_mulai,$tgl_selesai);
 		return view($this->folder.'/tampilData',$data);
 	}
 	public function create(Request $request){
@@ -68,12 +60,12 @@ class SetoranManajemenController extends Controller
 		]);
 		if ($validator) {
 			$cek=0;
-			$codes = generateRandomString(3).cariKode_helper("setoranManajemen");;        						
+			$codes = generateRandomString(3).cariKode_helper("rekonsiliasi");;        						
 			$jum  = $request->jum;			
 			for ($i=1; $i <= $jum; $i++) {
 				if(isset($_POST["chk_".$i])){
 					
-					$datas = new SetoranManajemenDetailModel;
+					$datas = new RekonsiliasiDetailModel;
 					$datas->code = $codes;
 					$datas->setoranPaket_id = $_POST["setoranPaket_id_".$i];
 					$datas->created_at = Carbon::now()->toDateTimeString();
@@ -85,10 +77,10 @@ class SetoranManajemenController extends Controller
 			
 			if($cek==0){
 				session()->put('msg', setMsg("Harus pilih setoran dulu","danger"));        
-				return redirect()->route('setoranManajemen.insert');
+				return redirect()->route('rekonsiliasi.insert');
 				exit();
 			}
-			$data = new SetoranManajemenModel;
+			$data = new RekonsiliasiModel;
 			$data->code = $codes;					
 			$data->partnership_id = $request->partnership_id;
 			$data->tgl_setor = $request->tgl_setor;
@@ -99,7 +91,7 @@ class SetoranManajemenController extends Controller
 			$data->save();              								
 
 			session()->put('msg', setMsg("Successed!","success"));        
-			return redirect()->route('setoranManajemen.index');
+			return redirect()->route('rekonsiliasi.index');
 		}else{
 			session()->put('msg', setMsg($validator->errors(),"danger"));        
 			echo "<script>history.go(-1)</script>";
@@ -118,26 +110,26 @@ class SetoranManajemenController extends Controller
 		}
 	}
 	public function delete($id){
-		$data = SetoranManajemenModel::find($id);
+		$data = RekonsiliasiModel::find($id);
 		$data->delete();
 		session()->put('msg', setMsg("Successed!","success"));        
-		return redirect()->route('setoranManajemen.index');
+		return redirect()->route('rekonsiliasi.index');
 	}
 	public function edit($id){
 		$data['title']  = "Edit ".$this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
 		$data['set']    = "edit";
-		$setoranManajemenData = SetoranManajemenModel::find($id);		
-		return view($this->folder.'/insert',$data)->with('setoranManajemen', $setoranManajemenData);
+		$rekonsiliasiData = RekonsiliasiModel::find($id);		
+		return view($this->folder.'/insert',$data)->with('rekonsiliasi', $rekonsiliasiData);
 	}
 	public function detail($id){
 		$data['title']  = "Detail ".$this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
 		$data['set']    = "detail";
-		$data['setoranManajemen'] = SetoranManajemenModel::join("partnership","setoranManajemen.partnership_id","=","partnership.id")
-			->where("setoranManajemen.id",$id)->get(["setoranManajemen.*","partnership.name AS namaPartner"]);
+		$data['rekonsiliasi'] = RekonsiliasiModel::join("partnership","rekonsiliasi.partnership_id","=","partnership.id")
+			->where("rekonsiliasi.id",$id)->get(["rekonsiliasi.*","partnership.name AS namaPartner"]);
 		return view($this->folder.'/detail',$data);
 	}
 	public function approval($id){
@@ -145,12 +137,12 @@ class SetoranManajemenController extends Controller
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
 		$data['set']    = "approval";
-		$data['setoranManajemen'] = SetoranManajemenModel::join("partnership","setoranManajemen.partnership_id","=","partnership.id")
-			->where("setoranManajemen.id",$id)->get(["setoranManajemen.*","partnership.name AS namaPartner"]);
+		$data['rekonsiliasi'] = RekonsiliasiModel::join("partnership","rekonsiliasi.partnership_id","=","partnership.id")
+			->where("rekonsiliasi.id",$id)->get(["rekonsiliasi.*","partnership.name AS namaPartner"]);
 		return view($this->folder.'/detail',$data);
 	}
 	public function saveApproval($id){
-		$data = SetoranManajemenModel::find($id);
+		$data = RekonsiliasiModel::find($id);
 		$data->status = 1;
 		$data->approval_status = 1;
 		$data->approval_at = Carbon::now()->toDateTimeString();
@@ -158,7 +150,7 @@ class SetoranManajemenController extends Controller
 		$data->updated_by = auth()->id();					
 		$data->save();
 
-		$dataUlang = DB::table("setoranManajemen_detail")->where("code",$data->code)->get();
+		$dataUlang = DB::table("rekonsiliasi_detail")->where("code",$data->code)->get();
 		foreach($dataUlang AS $rt){			
 			$ambil = SetoranPaketModel::find($rt->setoranPaket_id);			
 			$ambil->submit = 1;
@@ -170,14 +162,14 @@ class SetoranManajemenController extends Controller
 		}
 		
 		session()->put('msg', setMsg("Successed!","success"));        
-		return redirect()->route('setoranManajemen.index');
+		return redirect()->route('rekonsiliasi.index');
 	}
 	public function submit($id){
-		$data = SetoranManajemenModel::find($id);
+		$data = RekonsiliasiModel::find($id);
 		$data->submit = 1;
 		$data->save();
 		session()->put('msg', setMsg("Successed!","success"));        
-		return redirect()->route('setoranManajemen.index');
+		return redirect()->route('rekonsiliasi.index');
 	}
 	public function update($id, Request $request){
 		$validator = $request->validate([
@@ -188,7 +180,7 @@ class SetoranManajemenController extends Controller
 		  'presentase_partner' => 'required',		  
 		]);
 		if ($validator) {
-			$data = SetoranManajemenModel::find($id);
+			$data = RekonsiliasiModel::find($id);
 			$data->member_paket_id = $request->member_paket_id;        						
 			$data->tgl_pengembalian = $request->tgl_pengembalian;        			
 			$data->nominal = $request->nominal;        
@@ -199,7 +191,7 @@ class SetoranManajemenController extends Controller
 			
 			$data->save();
 			session()->put('msg', setMsg("Successed!","success"));        
-			return redirect()->route('setoranManajemen.index');
+			return redirect()->route('rekonsiliasi.index');
 		}else{
 			session()->put('msg', setMsg($validator->errors(),"danger"));        
 			echo "<script>history.go(-1)</script>";

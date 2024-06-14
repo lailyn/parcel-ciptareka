@@ -18,12 +18,11 @@
 	 		<td>$dt->namaMember</td>	 		
 	 		<td>".mata_uang_help($dt->totalNominal)."</td>	 		
 	 		<td>
-	 			<input type='hidden' name='jum' value='$jum'>
-	 			<input type='hidden' name='member_id_$no' value='$dt->ids'>
-	 			<input type='hidden' name='nominal_$no' value='$dt->totalNominal'>
+	 			<input type='hidden' name='jum' value='$jum'>	 			
+	 			<input type='hidden' name='setoranPaket_id_$no' value='$dt->ids'>	 			
 	 			<label class='form-check-label'>
           <input class='data-check' type='checkbox'
-            name='chk_$dt->ids' value='1'> check
+            name='chk_$no' value='1'> check
         </label>
 	 		</td>
 	 	</tr>

@@ -62,15 +62,15 @@
 							<td>{{ $row->keterangan }}</td>																					
 							<td>
 								<div class="dropdown">
-								<button class="btn btn-circle btn-sm btn-warning" type="button"
-									id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false"> Action <i class="fas fa-chevron-down"></i>
-								</button>
-								<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-									<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.edit', $row->id) }}">Edit</a>                         																		
-									<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 																		
+									<button class="btn btn-circle btn-sm btn-warning" type="button"
+										id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false"> Action <i class="fas fa-chevron-down"></i>
+									</button>
+									<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+										<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.edit', $row->id) }}">Edit</a>                         																		
+										<a class="dropdown-item <?=$status?>" href="{{ route('setoranPaket.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 																		
+									</div>
 								</div>
-							</div>
 							</td>
 							</tr>
 							<?php $gtotal+=$row->nominal; ?>

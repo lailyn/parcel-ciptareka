@@ -100,7 +100,7 @@
 										<div class="block-content">
 											<div class="p-sm-3 px-lg-4 py-lg-5">
 												<h1 class="mb-2">{{ get_setting('app') }}</h1>
-												<form autocomplete="off" class="js-validation-signin" action="{{ route('login.action') }}" method="POST">													
+												<form id="form1" autocomplete="off" class="js-validation-signin" action="{{ route('login.action') }}" method="POST">													
                           @csrf
                           @method('POST')
 													<div class="py-3">
@@ -178,20 +178,21 @@
 		          <span aria-hidden="true">&times;</span>
 		        </button>
 		      </div>
-		      <div class="modal-body">
-		        <form action="" method="POST">
+		      <form id="form2" action="{{ route('login.actionMember') }}" method="POST">
+		      	@csrf
+		      	<div class="modal-body">		        
 		        	<div class="form-group">
-								<input type="text" class="form-control form-control-alt form-control-lg" name="no_id" placeholder="No ID">
+								<input type="text" autocomplete="off" class="form-control form-control-alt form-control-lg" name="username" placeholder="No ID">
 							</div>
 							<div class="form-group">								
-								<input type="date" autocomplete="new-password" class="form-control form-control-alt form-control-lg" name="tgl_lahir" placeholder="Tgl Lahir">
-							</div>
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Lihat Dashboard</button>
-		      </div>
+								<input type="date" class="form-control form-control-alt form-control-lg" name="password" placeholder="Tgl Lahir">
+							</div>		        
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+			        <button type="submit" class="btn btn-primary">Lihat Dashboard</button>
+			      </div>
+			    </form>
 		    </div>
 		  </div>
 		</div>
@@ -240,6 +241,28 @@
 		  });
 		});
 
+		
+    document.addEventListener("DOMContentLoaded", function() {
+		    var form1 = document.getElementById("form1");
+		    var form2 = document.getElementById("form2");
+
+		    // Add keypress event listener to the document
+		    document.addEventListener("keypress", function(event) {
+		        // Check if the pressed key is Enter
+		        if (event.key === "Enter") {
+		            // Check if the focused element is within form1
+		            if (document.activeElement && form1.contains(document.activeElement)) {
+		                // Prevent the default action and submit form1
+		                event.preventDefault();
+		                form1.submit();
+		            } else {
+		                // Prevent default action if Enter is pressed in form2
+		                event.preventDefault();
+		            }
+		        }
+		    });
+		});
+    
 		    
 		</script>
 		

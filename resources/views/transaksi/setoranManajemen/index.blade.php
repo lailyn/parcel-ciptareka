@@ -30,39 +30,65 @@
 						<thead>
 							<tr>
 								<th class="text-center" style="width: 80px;">ID</th>								
-								<th>Kode</th>								
-								<th>Member</th>								
+								<th>Kode</th>																
 								<th>Partnership</th>								
 								<th>Tgl.Setor</th>
-								<th>Nominal</th>																
+								<th>Member</th>								
+								<th>Total</th>																
 								<th>Penerima</th>																								
 								<th>Keterangan</th>																																
+								<th width="5%">#</th>																																
 							</tr>
 						</thead>
 						<tbody>
 						<?php $gtotal=0; ?>
 						@foreach ($setoranManajemen as $key => $row)							
 							<?php 
-							if($row->submit==1){
+							if($row->approval_status==1){
 								$status = 'd-none';
-								$label = "<label class='badge badge-success'>submitted</label>";
+								$label = "<label class='badge badge-success'>approved</label>";
 							}else{
 								$status = '';$label = "";
+							}
+
+							$member = "";$total = 0;
+							$cekData = DB::table("setoranManajemen_detail")->join("setoranPaket","setoranManajemen_detail.setoranPaket_id","=","setoranPaket.id")
+									->join("member_paket","setoranPaket.member_paket_id","=","member_paket.id")
+									->join("member","member_paket.member_id","=","member.id")
+									->join("paket","member_paket.paket_id","=","paket.id")
+									->where("setoranManajemen_detail.code",$row->code)->get(["setoranPaket.nominal","paket.name AS paketName","member.name AS memberName"]);
+							foreach($cekData AS $rt){
+								if($member!='') $member.=", ";
+								$member.=$rt->memberName." (".$rt->paketName.")";
+								$total+=$rt->nominal;
 							}
 							?>
 							<tr>
 								<td>{{$key + 1}}</td>                							
-								<td>{{ $row->code }} {!! $label !!}</td>							
-								<td>{{ $row->namaMember }}</td>							
+								<td>{{ $row->code }} {!! $label !!}</td>															
 								<td>{{ $row->namaPartner }}</td>							
 								<td>{{ $row->tgl_setor }}</td>
-								<td>{{ mata_uang_help($row->nominal) }}</td>
-								<td>{{ $row->penerima }}</td>														
+								<td>{{ $member }}</td>
+								<td>{{ mata_uang_help($total) }}</td>
+								<td>{{ $row->penerima_setoran }}</td>														
 								<td>{{ $row->keterangan }}</td>																												
+								<td>
+									<div class="dropdown">
+										<button class="btn btn-circle btn-sm btn-warning" type="button"
+											id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false"> Action <i class="fas fa-chevron-down"></i>
+										</button>
+										<div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+											<a class="dropdown-item" href="{{ route('setoranManajemen.detail', $row->id) }}">Detail</a>                         																		
+											<a class="dropdown-item <?=$status?>" href="{{ route('setoranManajemen.approval', $row->id) }}">Approval</a>                         																		
+											<a class="dropdown-item <?=$status?>" href="{{ route('setoranManajemen.delete', $row->id) }}" onclick="return confirm('Yakin?')">Delete</a> 																		
+										</div>
+									</div>
+								</td>
 							</td>
 							</tr>
 							
-							<?php $gtotal+=$row->nominal; ?>
+							<?php $gtotal+=$total; ?>
 							@endforeach
 
 						</tbody>

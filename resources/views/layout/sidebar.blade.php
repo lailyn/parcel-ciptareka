@@ -54,23 +54,40 @@
 					<span class="nav-main-link-name">Partnership</span>
 				</a>
 			</li>
+
 			<?php       
       $act="";$show="";
-      if(setMenu('setoranPaket')!=''){           
+      if(setMenu('setoranPaket')!='' && setMenu('setoranManajemen')!=''){
         $show = 'd-none';                        
       }else{            
-        if($isi=='setoranPaket'){
+        if($isi=='setoranManajemen' || $isi=='setoranPaket'){
           $act = "active"; 
-          $show = "menu-open"; 
+          $show = "open"; 
         }
       }              
-      ?>
-			<li class="nav-main-item">
-				<a class="nav-main-link {{ $act }}" href="{{ route('setoranPaket.index') }}">
-					<i class="nav-main-link-icon si si-energy"></i>
-					<span class="nav-main-link-name">Setoran Paket</span>
-				</a>
+      ?>				
+			<li class="nav-main-item {{ $show }}">
+				<a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+					<i class="nav-main-link-icon si si-exclamation"></i>
+					<span class="nav-main-link-name">Setoran</span>
+				</a>				
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('setoranPaket') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='setoranPaket')?'active':'';?>" href="{{ route('setoranPaket.index') }}">
+							<span class="nav-main-link-name">Setoran Paket</span>
+						</a>
+					</li>						
+				</ul>
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('setoranManajemen') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='setoranManajemen')?'active':'';?>" href="{{ route('setoranManajemen.index') }}">
+							<span class="nav-main-link-name">Setoran Manajemen</span>
+						</a>
+					</li>						
+				</ul>
 			</li>
+
+			
 			<?php       
       $act="";$show="";
       if(setMenu('pengembalianSetoran')!=''){           
@@ -87,23 +104,84 @@
 					<i class="nav-main-link-icon si si-energy"></i>
 					<span class="nav-main-link-name">Pengembalian Setoran</span>
 				</a>
-			</li>
+			</li>			
 			<?php       
       $act="";$show="";
-      if(setMenu('setoranManajemen')!=''){           
+      if(setMenu('rekonsiliasi')!=''){           
         $show = 'd-none';                        
       }else{            
-        if($isi=='setoranManajemen'){
+        if($isi=='rekonsiliasi'){
           $act = "active"; 
           $show = "menu-open"; 
         }
       }              
       ?>
 			<li class="nav-main-item">
-				<a class="nav-main-link {{ $act }}" href="{{ route('setoranManajemen.index') }}">
+				<a class="nav-main-link {{ $act }}" href="{{ route('rekonsiliasi.index') }}">
 					<i class="nav-main-link-icon si si-energy"></i>
-					<span class="nav-main-link-name">Setoran Manajemen</span>
+					<span class="nav-main-link-name">Rekonsiliasi</span>
 				</a>
+			</li>
+
+			
+			<?php       
+      $act="";$show="";
+      if(setMenu('lapPaket')!='' && setMenu('lapProduk')!='' && setMenu('lapSetoran')!='' && setMenu('lapMitra')!='' && setMenu('lapBonus')!='' && setMenu('lapRekonsiliasi')!=''){
+        $show = 'd-none';                        
+      }else{            
+        if($isi=='lapPaket' || $isi=='lapProduk' || $isi=='lapSetoran' || $isi=='lapSetoran' || $isi=='lapBonus' || $isi=='lapRekonsiliasi'){
+          $act = "active"; 
+          $show = "open"; 
+        }
+      }              
+      ?>				
+			<li class="nav-main-item {{ $show }}">
+				<a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+					<i class="nav-main-link-icon si si-printer"></i>
+					<span class="nav-main-link-name">Laporan</span>
+				</a>				
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('lapProduk') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='lapProduk')?'active':'';?>" href="{{ route('lapProduk.index') }}">
+							<span class="nav-main-link-name">Lap.Paket</span>
+						</a>
+					</li>						
+				</ul>
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('lapPaket') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='lapPaket')?'active':'';?>" href="{{ route('lapPaket.index') }}">
+							<span class="nav-main-link-name">Lap.Produk</span>
+						</a>
+					</li>						
+				</ul>
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('lapSetoran') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='lapSetoran')?'active':'';?>" href="{{ route('lapSetoran.index') }}">
+							<span class="nav-main-link-name">Lap.Setoran</span>
+						</a>
+					</li>						
+				</ul>
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('lapMitra') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='lapMitra')?'active':'';?>" href="{{ route('lapMitra.index') }}">
+							<span class="nav-main-link-name">Lap.Kemitraan</span>
+						</a>
+					</li>						
+				</ul>
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('lapBonus') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='lapBonus')?'active':'';?>" href="{{ route('lapBonus.index') }}">
+							<span class="nav-main-link-name">Lap.Bonus</span>
+						</a>
+					</li>						
+				</ul>
+				<ul class="nav-main-submenu">
+					<li <?= setMenu('lapRekonsiliasi') ?> class="nav-main-item">
+						<a class="nav-main-link <?=($isi=='lapRekonsiliasi')?'active':'';?>" href="{{ route('lapRekonsiliasi.index') }}">
+							<span class="nav-main-link-name">Lap.Rekonsiliasi</span>
+						</a>
+					</li>						
+				</ul>
 			</li>
 			
 
