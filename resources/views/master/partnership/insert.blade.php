@@ -50,6 +50,22 @@
 						</div>						
 											
 						<div class="form-group row">			
+							<label class="col-sm-2 col-form-label">Level</label>
+							<div class="col-sm-4">
+								<select name="level_id" class="form-control" required>
+									<option value="">- choose -</option>
+									<?php 
+									foreach ($level as $key => $value) {
+										$rt = ($row)?$row->level_id:'';
+										if($rt==$value->id) $se = 'selected';
+											else $se = '';
+										echo "<option $se value='$value->id'>$value->name</option>";
+									}
+									?>
+								</select>
+							</div>													
+						</div>
+						<div class="form-group row">			
 							<label class="col-sm-2 col-form-label">No KTP</label>
 							<div class="col-sm-4">
 								<input type="number" required class="form-control" name="no_ktp" value="<?=($row)?$row->no_ktp:old('no_ktp');?>" placeholder="No KTP">

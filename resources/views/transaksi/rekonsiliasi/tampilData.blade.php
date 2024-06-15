@@ -17,9 +17,10 @@
 	 	$cariKewajiban = DB::table("member_paket")->join("paket","member_paket.paket_id","=","paket.id")
 	 		->where("paket.periode_id",$periode)
 	 		->where("member_paket.member_id",$dt->ids)
-	 		->get(['paket.iuran']);
+	 		->get(['paket.iuran','paket.tgl_awal']);
 	 	foreach ($cariKewajiban as $key => $value) {
-	 		$tot+=$value->iuran;
+	 		// $selisih = cariSelisih($value->tgl_mulai,$tgl_rekonsiliasi);
+	 		$tot+=$value->iuran;	 			 	
 	 	}
 
 	 	$cariSetor = DB::table("setoranPaket")->join("member_paket","setoranPaket.member_paket_id","=","member_paket.id")

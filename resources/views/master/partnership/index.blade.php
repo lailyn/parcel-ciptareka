@@ -35,6 +35,7 @@
 								<th>No.HP</th>
 								<th>No.KTP</th>																
 								<th>Alamat</th>																								
+								<th>Level</th>																
 								<th>Member</th>																
 								<th style="width: 10%;">Action</th>
 							</tr>
@@ -59,6 +60,7 @@
 							<td>{{ $row->no_hp }}</td>
 							<td>{{ $row->no_ktp }}</td>
 							<td>{{ $row->alamat }}</td>							
+							<td>{{ $row->level }}</td>							
 							<td>{{ $member }}</td>																					
 							<td>
 								<div class="dropdown">

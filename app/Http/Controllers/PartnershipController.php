@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PartnershipModel;
+use App\Models\LevelModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,8 +19,8 @@ class PartnershipController extends Controller
 	var $folder     = "master/partnership";
 
 	public function index(){
-		$partnershipData = PartnershipModel::orderBy('partnership.id','DESC')
-					->get(['partnership.*']);               
+		$partnershipData = PartnershipModel::orderBy('partnership.id','DESC')->join("level","partnership.level_id","=","level.id")
+					->get(['level.name AS level','partnership.*']);               
 		$data['title']  = $this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
@@ -54,7 +55,8 @@ class PartnershipController extends Controller
 		$data['title']  = "Add ".$this->title;
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
-		$data['set']    = "insert";		
+		$data['set']    = "insert";	
+		$data['level'] = LevelModel::All();	
 		return view($this->folder.'/insert',$data);
 	}	
 	public function create(Request $request){
@@ -70,6 +72,7 @@ class PartnershipController extends Controller
 			$data->code = generateRandomString(3).cariKode_helper("partnership");;        			
 			$data->no_ktp = $request->no_ktp;        			
 			$data->no_hp = $request->no_hp;        
+			$data->level_id = $request->level_id;        
 			$data->kecamatan = $request->kecamatan;        
 			$data->kota = $request->kota;        
 			$data->kodepos = $request->kodepos;        
@@ -106,6 +109,7 @@ class PartnershipController extends Controller
 		$data['subtitle']  = $this->subtitle;
 		$data['isi']    = $this->set;
 		$data['set']    = "edit";
+		$data['level'] = LevelModel::All();
 		$partnershipData = PartnershipModel::find($id);		
 		return view($this->folder.'/insert',$data)->with('partnership', $partnershipData);
 	}
@@ -123,6 +127,7 @@ class PartnershipController extends Controller
 			$data->no_hp = $request->no_hp;        
 			$data->kecamatan = $request->kecamatan;        
 			$data->kota = $request->kota;        
+			$data->level_id = $request->level_id;        
 			$data->kodepos = $request->kodepos;        
 			$data->akun_instagram = $request->akun_instagram;        
 			$data->akun_fb = $request->akun_fb;        

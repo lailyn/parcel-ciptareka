@@ -129,7 +129,7 @@
       if(setMenu('lapPaket')!='' && setMenu('lapProduk')!='' && setMenu('lapSetoran')!='' && setMenu('lapMitra')!='' && setMenu('lapBonus')!='' && setMenu('lapRekonsiliasi')!=''){
         $show = 'd-none';                        
       }else{            
-        if($isi=='lapPaket' || $isi=='lapProduk' || $isi=='lapSetoran' || $isi=='lapSetoran' || $isi=='lapBonus' || $isi=='lapRekonsiliasi'){
+        if($isi=='lapPaket' || $isi=='lapProduk' || $isi=='lapSetoran' || $isi=='lapMitra' || $isi=='lapBonus' || $isi=='lapRekonsiliasi'){
           $act = "active"; 
           $show = "open"; 
         }
@@ -143,14 +143,14 @@
 				<ul class="nav-main-submenu">
 					<li <?= setMenu('lapProduk') ?> class="nav-main-item">
 						<a class="nav-main-link <?=($isi=='lapProduk')?'active':'';?>" href="{{ route('lapProduk.index') }}">
-							<span class="nav-main-link-name">Lap.Paket</span>
+							<span class="nav-main-link-name">Lap.Produk</span>
 						</a>
 					</li>						
 				</ul>
 				<ul class="nav-main-submenu">
 					<li <?= setMenu('lapPaket') ?> class="nav-main-item">
 						<a class="nav-main-link <?=($isi=='lapPaket')?'active':'';?>" href="{{ route('lapPaket.index') }}">
-							<span class="nav-main-link-name">Lap.Produk</span>
+							<span class="nav-main-link-name">Lap.Paket</span>
 						</a>
 					</li>						
 				</ul>

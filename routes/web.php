@@ -17,6 +17,11 @@ use App\Http\Controllers\SetoranPaketController;
 use App\Http\Controllers\PengembalianSetoranController;
 use App\Http\Controllers\SetoranManajemenController;
 use App\Http\Controllers\RekonsiliasiController;
+use App\Http\Controllers\LapProdukController;
+use App\Http\Controllers\LapPaketController;
+use App\Http\Controllers\LapMitraController;
+use App\Http\Controllers\LapSetoranController;
+use App\Http\Controllers\LapBonusController;
 
 
 /*
@@ -212,7 +217,7 @@ Route::middleware('auth')->group(function () {
 		Route::post('/filter', 'filter')->name('filter');
 		Route::get('/cetak/{id}', 'cetak')->name('cetak');		
 	});
-	Route::controller(LapMitra::class)->name('lapMitra.')->prefix('lapMitra')->group(function(){
+	Route::controller(LapMitraController::class)->name('lapMitra.')->prefix('lapMitra')->group(function(){
 		Route::get('/index', 'index')->name('index');		
 		Route::post('/filter', 'filter')->name('filter');
 		Route::get('/cetak/{id}', 'cetak')->name('cetak');		
